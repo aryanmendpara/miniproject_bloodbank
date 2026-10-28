@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Process Blood Request</h1>
+    <a href="{% url 'request_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold">Request: {{ blood_request.request_id }}</h6>
+    </div>
+    <div class="card-body">
+        <p><strong>Hospital:</strong> {{ blood_request.hospital_name }}</p>
+        <p><strong>Blood Group:</strong> <span class="badge bg-danger">{{ blood_request.blood_group }}</span></p>
+        <p><strong>Units Requested:</strong> {{ blood_request.units_requested }}</p>
+        <p><strong>Priority:</strong> {{ blood_request.priority }}</p>
+        <p><strong>Current Status:</strong> {{ blood_request.status }}</p>
+        <p><strong>Request Date:</strong> {{ blood_request.request_date }}</p>
+        
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Action</label>
+                <select name="action" class="form-control" required>
+                    <option value="">Select Action</option>
+                    {% if blood_request.status == 'Pending' %}
+                        <option value="approve">Approve</option>
+                    {% endif %}
+                    {% if blood_request.status == 'Pending' or blood_request.status == 'Approved' %}
+                        <option value="fulfill">Fulfill (Deduct from Stock)</option>
+                    {% endif %}
+                    <option value="reject">Reject</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Process Request</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

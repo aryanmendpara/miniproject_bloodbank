@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Blood Inventory</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'stock_movements' %}" class="btn btn-secondary">
+            <i class="bi bi-list-ul"></i> Stock Movements
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    {% for item in inventory %}
+    <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
+        <div class="card shadow h-100 {% if item.units_available < item.minimum_threshold %}border-danger{% endif %}">
+            <div class="card-body text-center">
+                <h2 class="card-title text-danger mb-3">{{ item.blood_group }}</h2>
+                <h3 class="mb-2">{{ item.units_available }} Units</h3>
+                <p class="text-muted mb-2">Min Threshold: {{ item.minimum_threshold }}</p>
+                {% if item.units_available < item.minimum_threshold %}
+                    <span class="badge bg-danger">LOW STOCK</span>
+                {% else %}
+                    <span class="badge bg-success">SUFFICIENT</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Edit Donor</h1>
+    <a href="{% url 'donor_detail' donor.pk %}" class="btn btn-secondary">Back to Details</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold">Edit Donor Information</h6>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Donor ID</label>
+                    {{ form.donor_id }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Full Name</label>
+                    {{ form.full_name }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Age</label>
+                    {{ form.age }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Gender</label>
+                    {{ form.gender }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Blood Group</label>
+                    {{ form.blood_group }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Phone Number</label>
+                    {{ form.phone_number }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">City</label>
+                    {{ form.city }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Last Donation Date</label>
+                    {{ form.last_donation_date }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Eligibility Status</label>
+                    <div class="form-check mt-2">
+                        {{ form.donation_eligibility_status }}
+                        <label class="form-check-label">Eligible to Donate</label>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-warning">Update Donor</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

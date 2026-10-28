@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Donor Management</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'add_donor' %}" class="btn btn-danger">
+            <i class="bi bi-person-plus"></i> Add New Donor
+        </a>
+    </div>
+</div>
+
+<!-- Search and Filter -->
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search by name or ID" value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-3">
+                <select name="blood_group" class="form-control">
+                    <option value="">All Blood Groups</option>
+                    <option value="A+" {% if request.GET.blood_group == 'A+' %}selected{% endif %}>A+</option>
+                    <option value="A-" {% if request.GET.blood_group == 'A-' %}selected{% endif %}>A-</option>
+                    <option value="B+" {% if request.GET.blood_group == 'B+' %}selected{% endif %}>B+</option>
+                    <option value="B-" {% if request.GET.blood_group == 'B-' %}selected{% endif %}>B-</option>
+                    <option value="AB+" {% if request.GET.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                    <option value="AB-" {% if request.GET.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                    <option value="O+" {% if request.GET.blood_group == 'O+' %}selected{% endif %}>O+</option>
+                    <option value="O-" {% if request.GET.blood_group == 'O-' %}selected{% endif %}>O-</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <input type="text" name="city" class="form-control" placeholder="Filter by city" value="{{ request.GET.city }}">
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Donors Table -->
+<div class="card shadow">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold">All Donors</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Donor ID</th>
+                        <th>Full Name</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Blood Group</th>
+                        <th>Phone</th>
+                        <th>City</th>
+                        <th>Registration Date</th>
+                        <th>Eligible</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donor in donors %}
+                    <tr>
+                        <td>{{ donor.donor_id }}</td>
+                        <td>{{ donor.full_name }}</td>
+                        <td>{{ donor.age }}</td>
+                        <td>{{ donor.gender }}</td>
+                        <td><span class="badge bg-danger">{{ donor.blood_group }}</span></td>
+                        <td>{{ donor.phone_number }}</td>
+                        <td>{{ donor.city }}</td>
+                        <td>{{ donor.registration_date }}</td>
+                        <td>
+                            {% if donor.donation_eligibility_status %}
+                                <span class="badge bg-success">Yes</span>
+                            {% else %}
+                                <span class="badge bg-secondary">No</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'donor_detail' donor.pk %}" class="btn btn-sm btn-info"><i class="bi bi-eye"></i></a>
+                            <a href="{% url 'edit_donor' donor.pk %}" class="btn btn-sm btn-warning"><i class="bi bi-pencil"></i></a>
+                            <a href="{% url 'delete_donor' donor.pk %}" class="btn btn-sm btn-danger"><i class="bi bi-trash"></i></a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="text-center">No donors found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Blood Requests</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'add_request' %}" class="btn btn-danger">
+            <i class="bi bi-plus-circle"></i> New Request
+        </a>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-3">
+                <select name="blood_group" class="form-control">
+                    <option value="">All Blood Groups</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Rejected">Rejected</option>
+                    <option value="Fulfilled">Fulfilled</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="priority" class="form-control">
+                    <option value="">All Priority</option>
+                    <option value="Normal">Normal</option>
+                    <option value="High">High</option>
+                    <option value="Emergency">Emergency</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold">All Blood Requests</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Hospital/Requester</th>
+                        <th>Blood Group</th>
+                        <th>Units</th>
+                        <th>Request Date</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in requests %}
+                    <tr>
+                        <td>{{ req.request_id }}</td>
+                        <td>{{ req.hospital_name }}</td>
+                        <td><span class="badge bg-danger">{{ req.blood_group }}</span></td>
+                        <td>{{ req.units_requested }}</td>
+                        <td>{{ req.request_date }}</td>
+                        <td>
+                            {% if req.priority == 'Emergency' %}
+                                <span class="badge bg-danger">{{ req.priority }}</span>
+                            {% elif req.priority == 'High' %}
+                                <span class="badge bg-warning">{{ req.priority }}</span>
+                            {% else %}
+                                <span class="badge bg-info">{{ req.priority }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if req.status == 'Fulfilled' %}
+                                <span class="badge bg-success">{{ req.status }}</span>
+                            {% elif req.status == 'Approved' %}
+                                <span class="badge bg-primary">{{ req.status }}</span>
+                            {% elif req.status == 'Pending' %}
+                                <span class="badge bg-warning">{{ req.status }}</span>
+                            {% else %}
+                                <span class="badge bg-danger">{{ req.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if req.status == 'Pending' or req.status == 'Approved' %}
+                                <a href="{% url 'process_request' req.pk %}" class="btn btn-sm btn-primary">Process</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No requests found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

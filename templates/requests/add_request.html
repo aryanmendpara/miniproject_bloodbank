@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">New Blood Request</h1>
+    <a href="{% url 'request_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold">Request Details</h6>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Request ID</label>
+                    {{ form.request_id }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Hospital/Requester Name</label>
+                    {{ form.hospital_name }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Blood Group Required</label>
+                    {{ form.blood_group }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Units Requested</label>
+                    {{ form.units_requested }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Request Date</label>
+                    {{ form.request_date }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Priority</label>
+                    {{ form.priority }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Status</label>
+                    {{ form.status }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Remarks</label>
+                {{ form.remarks }}
+            </div>
+            <button type="submit" class="btn btn-danger">Submit Request</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

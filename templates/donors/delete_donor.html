@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Delete Donor</h1>
+</div>
+
+<div class="card shadow">
+    <div class="card-header bg-danger text-white">
+        <h6 class="m-0 font-weight-bold">Confirm Deletion</h6>
+    </div>
+    <div class="card-body">
+        <p class="alert alert-warning">Are you sure you want to delete this donor?</p>
+        <p><strong>Donor ID:</strong> {{ donor.donor_id }}</p>
+        <p><strong>Name:</strong> {{ donor.full_name }}</p>
+        <p><strong>Blood Group:</strong> {{ donor.blood_group }}</p>
+        <form method="post" class="delete-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a href="{% url 'donor_detail' donor.pk %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

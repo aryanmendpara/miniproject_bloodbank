@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Donation Management</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a href="{% url 'add_donation' %}" class="btn btn-danger">
+            <i class="bi bi-plus-circle"></i> Record Donation
+        </a>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search by donor or donation ID" value="{{ request.GET.search }}">
+            </div>
+            <div class="col-md-3">
+                <select name="blood_group" class="form-control">
+                    <option value="">All Blood Groups</option>
+                    <option value="A+">A+</option>
+                    <option value="A-">A-</option>
+                    <option value="B+">B+</option>
+                    <option value="B-">B-</option>
+                    <option value="AB+">AB+</option>
+                    <option value="AB-">AB-</option>
+                    <option value="O+">O+</option>
+                    <option value="O-">O-</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-control">
+                    <option value="">All Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Rejected">Rejected</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold">All Donations</h6>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Donation ID</th>
+                        <th>Donor</th>
+                        <th>Blood Group</th>
+                        <th>Units</th>
+                        <th>Donation Date</th>
+                        <th>Collection Center</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for donation in donations %}
+                    <tr>
+                        <td>{{ donation.donation_id }}</td>
+                        <td>{{ donation.donor.full_name }}</td>
+                        <td><span class="badge bg-danger">{{ donation.blood_group }}</span></td>
+                        <td>{{ donation.units_collected }}</td>
+                        <td>{{ donation.donation_date }}</td>
+                        <td>{{ donation.collection_center }}</td>
+                        <td>
+                            {% if donation.donation_status == 'Confirmed' %}
+                                <span class="badge bg-success">{{ donation.donation_status }}</span>
+                            {% elif donation.donation_status == 'Pending' %}
+                                <span class="badge bg-warning">{{ donation.donation_status }}</span>
+                            {% else %}
+                                <span class="badge bg-danger">{{ donation.donation_status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{% url 'update_donation_status' donation.pk %}" class="btn btn-sm btn-primary">Update Status</a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center">No donations found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

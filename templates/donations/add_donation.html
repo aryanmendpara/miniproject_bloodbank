@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Record New Donation</h1>
+    <a href="{% url 'donation_list' %}" class="btn btn-secondary">Back to List</a>
+</div>
+
+<div class="card shadow">
+    <div class="card-header">
+        <h6 class="m-0 font-weight-bold">Donation Details</h6>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Donation ID</label>
+                    {{ form.donation_id }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Donor</label>
+                    {{ form.donor }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Blood Group</label>
+                    {{ form.blood_group }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Units Collected</label>
+                    {{ form.units_collected }}
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Donation Date</label>
+                    {{ form.donation_date }}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Collection Center</label>
+                    {{ form.collection_center }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Status</label>
+                    {{ form.donation_status }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-danger">Record Donation</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
