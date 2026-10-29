@@ -628,3 +628,41 @@ python tkinter_admin.py
 ---
 
 *This report highlights all major features and their implementation. The complete working codebase is available in the repository.*
+
+
+---
+
+## 13. NumPy & Pandas Integration
+
+### Features Implemented
+- NumPy arrays used for numerical operations in chart generation
+- Pandas DataFrames used for data manipulation and analysis
+- Demonstrates Python data science libraries as required
+
+### Code Highlight - NumPy Usage
+```python
+# dashboard/views.py
+import numpy as np
+import pandas as pd
+
+# Using numpy for array operations
+collections_array = np.array(collections)
+plt.bar(months, collections_array, color='#dc3545')
+
+# Using numpy for calculations
+sizes_array = np.array(sizes)
+plt.pie(sizes_array, labels=labels, autopct='%1.1f%%', startangle=90)
+```
+
+### Code Highlight - Pandas Usage
+```python
+# dashboard/views.py
+# Using pandas for data manipulation
+trend_df = pd.DataFrame({'Month': months, 'Donations': counts})
+plt.plot(trend_df['Month'], trend_df['Donations'], marker='o', color='#dc3545', linewidth=2)
+
+# Using pandas DataFrames for data analysis
+donors_df = pd.DataFrame(list(Donor.objects.all().values()))
+donations_df = pd.DataFrame(list(Donation.objects.filter(donation_status='Confirmed').values()))
+inventory_df = pd.DataFrame(list(BloodInventory.objects.all().values()))
+```
